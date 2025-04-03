@@ -143,7 +143,8 @@ img {
 }
 
 .mint-green{
-  background-color: #e3f9e5;
+  background: linear-gradient(to right, black, white);;
+  color: #1a1a1a;
 }
 /* Forms
    ========================================================================== */
@@ -430,6 +431,7 @@ a {
 a:hover {
   color: #065b83;
   text-decoration: underline;
+
 }
 
 /* HEIGHT / WIDTH UTILS */
@@ -986,6 +988,7 @@ a:hover {
   background-color: #aeaeae;
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
+
 
 .btn:hover {
   background-color: #cecece;
