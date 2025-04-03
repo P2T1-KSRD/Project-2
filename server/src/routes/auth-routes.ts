@@ -32,10 +32,51 @@ export const login = async (req: Request, res: Response) => {
   return res.json({ token });  // Send the token as a JSON response
 };
 
+export const signup = async (req: Request, res: Response): Promise<Response> => {
+  const { username, email, password } = req.body;
+
+  try {
+  const existingUsername = await User.findOne({
+    where: { username },
+  });
+  if (existingUsername) {
+    return res.status(400).json({ message: 'Username unavailable'});
+  }
+
+  const existingEmail = await User.findOne({
+      where: { email },
+    });
+  if (existingEmail) {
+      return res.status(400).json({ message: 'Email already in use'});
+  }
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const NewUser = await User.create({
+          username, 
+          email,
+          password: hashedPassword,
+        });
+        // Get the secret key from environment variables
+    const secretKey = process.env.JWT_SECRET_KEY || '';
+
+  // Generate a JWT token for the authenticated user
+    const token = jwt.sign({ username: NewUser.username }, secretKey, { expiresIn: '1h' });
+    return res.json({ token });
+      } catch (error) { 
+        console.error(error);
+        return res.status(500).json({ message: 'Server error' });
+      }
+    };
+
+
 // Create a new router instance
 const router = Router();
 
 // POST /login - Login a user
 router.post('/login', login);  // Define the login route
+router.post('/signup', signup);
 
 export default router;  // Export the router instance
+
+
+
