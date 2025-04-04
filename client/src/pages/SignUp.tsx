@@ -30,7 +30,7 @@ const SignUp = () => {
       // If login is successful, call Auth.login to store the token in localStorage
       Auth.login(data.token);
       const navigate = useNavigate();
-      navigate("/AddRestaurant");
+      navigate("/addrestaurant");
     } catch (err) {
       console.error('Failed to login', err);  // Log any errors that occur during login
     }

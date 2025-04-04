@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { User } from '../models/user.js';  // Import the User model
+import { Restaurant } from '../models/index.js';
 import jwt from 'jsonwebtoken';  // Import the JSON Web Token library
 import bcrypt from 'bcrypt';  // Import the bcrypt library for password hashing
 
@@ -69,12 +70,38 @@ export const signup = async (req: Request, res: Response): Promise<Response> => 
     };
 
 
+  const restaurant = async (req: Request, res: Response): Promise<Response> => {
+    const { name, cuisine, address, price, rating } = req.body;
+    
+      try {
+        const existingUsername = await Restaurant.findOne({
+          where: { name },
+        });
+        if (existingUsername) {
+          return res.status(400).json({ message: 'Restaurant already suggested.'});
+        }
+        const NewRestaurant = await Restaurant.create({
+          name, 
+          cuisine,
+          address,
+          price, 
+          rating
+        });
+        const secretKey = process.env.JWT_SECRET_KEY || ''
+    const token = jwt.sign({ name: NewRestaurant.name }, secretKey, { expiresIn: '1h' });
+       return res.json({ token });
+      } catch (error) { 
+        console.error(error);
+        return res.status(500).json({ message: 'Server error' });
+      }
+    };
 // Create a new router instance
 const router = Router();
 
 // POST /login - Login a user
 router.post('/login', login);  // Define the login route
 router.post('/signup', signup);
+router.post('/restaurant', restaurant);
 
 export default router;  // Export the router instance
 

@@ -4,12 +4,14 @@ import type { UserData } from "../interfaces/UserData";
 import ErrorPage from "./ErrorPage";
 import UserList from '../components/Users';
 import auth from '../utils/auth';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
     const [users, setUsers] = useState<UserData[]>([]);
     const [error, setError] = useState(false);
     const [loginCheck, setLoginCheck] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (loginCheck) {
@@ -24,6 +26,7 @@ const Home = () => {
     const checkLogin = () => {
         if (auth.loggedIn()) {
             setLoginCheck(true);
+            navigate("/addrestaurant");
         }
     };
 
@@ -41,20 +44,24 @@ const Home = () => {
         return <ErrorPage />;
     }
 
-    return (
-        <>
-            {
-                !loginCheck ? (
-                    <div className='login-notice'>
-                        <h1>
-                            Login to view all your friends!
-                        </h1>
-                    </div>
-                ) : (
-                    <UserList users={users} />
-                )}
-        </>
-    );
-};
+  return null;
+}
+// (
+//         <>
+//             {
+//                 !loginCheck ? (
+//                     <div className='login-notice'>
+//                         <h1>
+//                             Login to view all your friends!
+//                         </h1>
+//                     </div>
+//                 ) : (
+//                     <div className='browsing'>
+//                         <h1>Welcome!</h1>
+//                     </div>
+//                 )}
+//         </>
+//     );
+// };
 
 export default Home;
