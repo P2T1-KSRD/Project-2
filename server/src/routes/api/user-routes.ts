@@ -1,6 +1,7 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 import { User } from '../../models/index.js';
+import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
@@ -34,13 +35,28 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // POST /users - Create a new user
-router.post('/', async (req: Request, res: Response) => {
+
+router.post('/signup', async (req: Request, res: Response): Promise<Response> => {
   const { username, email, password } = req.body;
   try {
-    const newUser = await User.create({ username, email, password });
-    res.status(201).json(newUser);
+    const existingUser = await User.findOne({ where: { username } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username unavailable' });
+    }
+    const existingEmail = await User.findOne({ where: { email } });
+    if (existingEmail) {
+      return res.status(400).json({ message: 'Email already in use' });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({ username, email, password: hashedPassword });
+
+    return res.status(201).json({
+      id: newUser.id,
+      username: newUser.username,
+      email: newUser.email,
+    });
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 });
 

@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import auth from "../utils/auth";
+import Auth from '../utils/auth';  // Import the Auth utility for managing authentication state
+import { signup } from "../api/authAPI";  // Import the login function from the API
+import { UserSignup } from "../interfaces/UserSignup";  // Import the interface for UserLogin
 
 const SignUp = () => {
-    const [signData, setSignData] = useState ({
+    const [signUpData, setsignUpData] = useState ({
         username: "",
         email: "",
         password: "",
     });
 
     const [error, setError] = useState("");
-    const navigate = useNavigate();
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setSignData({
-      ...signData,
+    setsignUpData({
+      ...signUpData,
       [name]: value,
     });
   };
@@ -24,24 +25,14 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Call the login API endpoint with signData
-      const response = await fetch("/api/user/signup", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(signData),
-      });
-      if (!response.ok) {
-      const data = await response.json()
-      setError(data.message || "Sign up failed");
-      return;
-      }
-      const data = await response.json()
-      auth.login(data.token);
+      // Call the login API endpoint with loginData
+      const data = await signup(signUpData);
+      // If login is successful, call Auth.login to store the token in localStorage
+      Auth.login(data.token);
+      const navigate = useNavigate();
       navigate("/AddRestaurant");
     } catch (err) {
-      console.error('Failed to sign up', err);  // Log any errors that occur during Sign Up
+      console.error('Failed to login', err);  // Log any errors that occur during login
     }
   };
   return (
@@ -54,7 +45,7 @@ const SignUp = () => {
             type="text"
             id="username"
             name="username"
-            value={signData.username}
+            value={signUpData.username}
             onChange={handleChange}
             required
           />
@@ -65,7 +56,7 @@ const SignUp = () => {
             type="email"
             id="email"
             name="email"
-            value={signData.email}
+            value={signUpData.email}
             onChange={handleChange}
             required
           />
@@ -76,7 +67,7 @@ const SignUp = () => {
             type="password"
             id="password"
             name="password"
-            value={signData.password}
+            value={signUpData.password}
             onChange={handleChange}
             required
           />
