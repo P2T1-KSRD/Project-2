@@ -3,6 +3,8 @@ import { useState, FormEvent, ChangeEvent } from "react";
 import Auth from '../utils/auth';  // Import the Auth utility for managing authentication state
 import { login } from "../api/authAPI";  // Import the login function from the API
 import { UserLogin } from "../interfaces/UserLogin";  // Import the interface for UserLogin
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
   // State to manage the login form data
@@ -28,6 +30,9 @@ const Login = () => {
       const data = await login(loginData);
       // If login is successful, call Auth.login to store the token in localStorage
       Auth.login(data.token);
+      const navigate = useNavigate();
+      console.log("navigating...")
+      navigate("/addrestaurant");
     } catch (err) {
       console.error('Failed to login', err);  // Log any errors that occur during login
     }
