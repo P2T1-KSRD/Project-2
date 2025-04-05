@@ -4,6 +4,7 @@ import type { UserData } from "../interfaces/UserData";
 import ErrorPage from "./ErrorPage";
 import UserList from '../components/Users';
 import auth from '../utils/auth';
+import fork from '../assets/fork.jpg';  
 
 const Home = () => {
 
@@ -41,12 +42,12 @@ const Home = () => {
         return <ErrorPage />;
     }
 return (
-  <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/your-image.jpg')" }}>
+  <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${fork})` }}>
     {
       !loginCheck ? (
         <div className="text-center p-10 bg-white bg-opacity-70 rounded-md max-w-xl mx-auto mt-20">
           <h1 className="text-3xl font-bold text-green-600 mb-4">
-            Login to view all your friends!
+          Let’s Find Your Next Bite
           </h1>
         </div>
       ) : (
@@ -62,7 +63,7 @@ return (
                 !loginCheck ? (
                     <div className='login-notice'>
                         <h1>
-                            Login to view all your friends!
+                        Let’s Find Your Next Bite
                         </h1>
                     </div>
                 ) : (
