@@ -7,6 +7,7 @@ import auth from '../utils/auth';
 import fork from '../assets/fork.jpg';  
 
 const Home = () => {
+    
 
     const [users, setUsers] = useState<UserData[]>([]);
     const [error, setError] = useState(false);

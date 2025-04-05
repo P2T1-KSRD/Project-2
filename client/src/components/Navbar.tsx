@@ -20,7 +20,7 @@ const Navbar = () => {
 
   return (
     <div className="display-flex justify-space-between align-center py-2 px-5 mint-green">
-      <h1 className='Navbar-title' style={{ fontSize: '2rem', fontFamily:'sans-serif', margin: 0 , color: '#ddbe51'}}>
+      <h1 className='Navbar-title' style={{ fontSize: '2rem', fontFamily:'Marker Felt, fantasy', margin: 0 , color: '#ddbe51'}}>
         <Link to="/" style={{ textDecoration: 'none', color: '#FCAE1E' }}>Fork in the Road!</Link>
       </h1>
       <div>
