@@ -1,6 +1,7 @@
 import express from "express";
 import type { Request, Response } from "express";
 import { Restaurant } from "../../models/index.js";
+import { calculateRestaurantRating } from "../../services/ratingService.js";
 
 const router = express.Router();
 
@@ -18,16 +19,21 @@ router.get("/", async (_req: Request, res: Response) => {
 router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const restaurant = await Restaurant.findByPk(id, {
-      attributes: { exclude: ["password"] },
-    });
-    if (restaurant) {
-      res.json(restaurant);
-    } else {
-      res.status(404).json({ message: "Restaurant not found" });
+    const restaurant = await Restaurant.findByPk(id, { include: [] });
+    if (!restaurant) {
+      return res.status(404).json({ message: "Restaurant not found" });
     }
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+
+    // call the calulate rating service method
+    const rating = await calculateRestaurantRating(parseInt(id));
+
+    // convert the model instance data into a json object
+    // spread the existing json boject data and overwirte rating property
+    // serialize and return the restaurant data with the calculated rating
+    return res.json({ ...restaurant.toJSON(), rating });
+  } catch (error) {
+    console.error("Error fetching restaurant:", error);
+    return res.status(500).json({ message: "Failed to fetch restaurant" });
   }
 });
 

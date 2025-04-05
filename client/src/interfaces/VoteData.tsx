@@ -1,4 +1,4 @@
 export interface VoteData {
-  userId: string;
-  restaurantId: string;
+  userID: string;
+  restaurantID: string;
 }
