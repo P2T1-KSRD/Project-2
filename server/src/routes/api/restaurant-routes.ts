@@ -4,7 +4,7 @@ import { Restaurant } from "../../models/index.js";
 
 const router = express.Router();
 
-// GET /users - Get all users
+// GET /restaurant - Get all restaurants
 router.get("/", async (_req: Request, res: Response) => {
   try {
     const restaurants = await Restaurant.findAll();
@@ -14,7 +14,7 @@ router.get("/", async (_req: Request, res: Response) => {
   }
 });
 
-// GET /users/:id - Get a user by id
+// GET /restaurant/:id - Get a restaurant by id
 router.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
