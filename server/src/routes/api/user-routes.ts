@@ -1,13 +1,11 @@
 import express from "express";
 import type { Request, Response } from "express";
 import { User } from "../../models/index.js";
-// import { authenticateToken } from "../../middleware/auth.js";
 
 const router = express.Router();
 
 // GET /users - Get all users
-// router.get("/", authenticateToken, async (_req: Request, res: Response) => {
-router.get("/",  async (_req: Request, res: Response) => {
+router.get("/", async (_req: Request, res: Response) => {
   console.log("GET USERS");
   try {
     const users = await User.findAll({

@@ -1,5 +1,6 @@
 import { User } from "../models/user.js";
 import { Vote } from "../models/vote.js";
+import { Restaurant } from "../models/restaurant.js";
 
 // fetch all votes for a restaurant from the database
 // fetch all users from the database
@@ -22,4 +23,21 @@ export async function calculateRestaurantRating(
     console.error("Error calculating rating:", error);
     return 0; // Or handle the error as appropriate
   }
+}
+
+// update the rating of all restaurants in the database
+export async function calculateAllRestaurantRatings(
+  restaurants: Restaurant[]
+): Promise<Restaurant[]> {
+  try {
+    for (const restaurant of restaurants) {
+      const rating = await calculateRestaurantRating(restaurant.id);
+      await restaurant.update({ rating: rating });
+    }
+  } catch (error) {
+    console.error("Error calculating all restaurant ratings:", error);
+    throw error;
+  }
+
+  return restaurants;
 }

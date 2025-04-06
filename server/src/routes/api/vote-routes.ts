@@ -4,23 +4,26 @@ import { Vote } from "../../models/index.js";
 
 const router = express.Router();
 
-// GET /vote/:restaurant-id - Get all votes for a specific restaurant
-router.get("/restaurant/:restaurantID", async (req: Request, res: Response) => {
-  const { restaurantID } = req.params;
-  try {
-    const votes = await Vote.findAll({
-      where: {
-        restaurantID: restaurantID,
-      },
-    });
-    res.json(votes);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+// GET /votes/restaurants/:restaurantID - Get all votes for a specific restaurant
+router.get(
+  "/restaurants/:restaurantID",
+  async (req: Request, res: Response) => {
+    const { restaurantID } = req.params;
+    try {
+      const votes = await Vote.findAll({
+        where: {
+          restaurantID: restaurantID,
+        },
+      });
+      res.json(votes);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
   }
-});
+);
 
-// GET /vote/:user-id - Get all votes for a specific user
-router.get("/user/:userID", async (req: Request, res: Response) => {
+// GET /votes/users/:userID - Get all votes for a specific user
+router.get("/users/:userID", async (req: Request, res: Response) => {
   const { userID } = req.params;
   try {
     const votes = await Vote.findAll({
@@ -34,10 +37,11 @@ router.get("/user/:userID", async (req: Request, res: Response) => {
   }
 });
 
-// POST /vote - Create a new vote
+// POST /votes - Create a new vote
 router.post("/", async (req: Request, res: Response) => {
   const { userID, restaurantID } = req.body;
   try {
+    console.log(req.body);
     const newVote = await Vote.create({
       userID,
       restaurantID,

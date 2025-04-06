@@ -1,7 +1,10 @@
 import express from "express";
 import type { Request, Response } from "express";
 import { Restaurant } from "../../models/index.js";
-import { calculateRestaurantRating } from "../../services/ratingService.js";
+import {
+  calculateRestaurantRating,
+  calculateAllRestaurantRatings,
+} from "../../services/ratingService.js";
 
 const router = express.Router();
 
@@ -9,6 +12,7 @@ const router = express.Router();
 router.get("/", async (_req: Request, res: Response) => {
   try {
     const restaurants = await Restaurant.findAll();
+    calculateAllRestaurantRatings(restaurants);
     res.json(restaurants);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
