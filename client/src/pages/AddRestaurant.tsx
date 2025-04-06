@@ -1,5 +1,5 @@
 import { useState, FormEvent, ChangeEvent } from "react";
-import { restaurant } from "../api/restaurantAPI";
+import { createRestaurant } from "../api/restaurantAPI";
 import Modal from "../components/Modal";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,7 @@ const AddRestaurant = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const data = await restaurant(restaurantData);
+      const data = await createRestaurant(restaurantData);
       console.log("Restaurant added successfully:", data);
       setShowModal(true);
     } catch (err) {

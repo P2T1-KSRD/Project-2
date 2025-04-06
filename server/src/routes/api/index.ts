@@ -6,7 +6,7 @@ import { voteRouter } from "./vote-routes.js";
 const router = Router();
 
 router.use("/users", userRouter);
-router.use("/restaurant", restaurantRouter);
-router.use("/vote", voteRouter);
+router.use("/restaurants", restaurantRouter);
+router.use("/votes", voteRouter);
 
 export default router;

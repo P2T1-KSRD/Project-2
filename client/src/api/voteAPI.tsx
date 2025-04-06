@@ -3,7 +3,7 @@ import { VoteData } from "../interfaces/VoteData.tsx";
 
 const createVote = async (voteData: VoteData) => {
   try {
-    const response = await fetch("/api/vote", {
+    const response = await fetch("/api/votes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
