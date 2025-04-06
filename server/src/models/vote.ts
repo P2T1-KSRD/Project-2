@@ -44,6 +44,12 @@ export function VoteFactory(sequelize: Sequelize): typeof Vote {
     {
       tableName: "votes", // Name of the table in PostgreSQL
       sequelize, // The Sequelize instance that connects to PostgreSQL
+      indexes: [
+        {
+          unique: true,
+          fields: ["userID", "restaurantID"], // Add unique constraint
+        },
+      ],
     }
   );
 

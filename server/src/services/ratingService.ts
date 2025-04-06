@@ -41,3 +41,16 @@ export async function calculateAllRestaurantRatings(
 
   return restaurants;
 }
+
+export async function sortRestaurantRatingsInDescendingOrder(
+  restaurants: Restaurant[]
+): Promise<Restaurant[]> {
+  try {
+    restaurants.sort((a, b) => b.rating - a.rating);
+  } catch (error) {
+    console.error("Error calculating all restaurant ratings:", error);
+    throw error;
+  }
+
+  return restaurants;
+}

@@ -1,6 +1,8 @@
 import express from "express";
+import { ValidationError } from "sequelize";
 import type { Request, Response } from "express";
-import { Vote } from "../../models/index.js";
+import { User, Vote } from "../../models/index.js";
+import { authenticateToken } from "../../middleware/auth.js";
 
 const router = express.Router();
 
@@ -38,17 +40,44 @@ router.get("/users/:userID", async (req: Request, res: Response) => {
 });
 
 // POST /votes - Create a new vote
-router.post("/", async (req: Request, res: Response) => {
-  const { userID, restaurantID } = req.body;
+router.post("/", authenticateToken, async (req: Request, res: Response) => {
+  // extract username from the JWT request header
+  const { restaurantID } = req.body;
+  const username: string = req.user?.username ?? "";
+  if (!username) {
+    return res.status(400).json({ message: "Username is required" });
+  }
+
+  // extract the primary key of the user from the database
+  // by matching the username from the JWT token
+  // with the username in the database
   try {
+    const user = await User.findOne({
+      where: {
+        username: username,
+      },
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const userID = user.id;
+
     console.log(req.body);
     const newVote = await Vote.create({
       userID,
       restaurantID,
     });
-    res.status(201).json(newVote);
+    return res.status(201).json(newVote);
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    if (
+      error instanceof ValidationError &&
+      error.name === "SequelizeUniqueConstraintError"
+    ) {
+      return res
+        .status(409)
+        .json({ message: "You have already voted for this restaurant." });
+    }
+    return res.status(400).json({ message: error.message });
   }
 });
 
