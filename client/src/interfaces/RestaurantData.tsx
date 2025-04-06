@@ -1,5 +1,5 @@
 export interface RestaurantData {
-  id?: number | null;
+  id?: number;
   name: string | null;
   cuisine: string | null;
   address: string | null;

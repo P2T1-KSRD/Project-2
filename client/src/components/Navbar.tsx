@@ -1,16 +1,35 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import auth from "../utils/auth";
-import { retrieveUsers } from "../api/userAPI";
+// installed this module so we can decode the JWT on the client side
+import { jwtDecode } from "jwt-decode";
+
+interface JwtPayload {
+  username: string;
+  userID: number;
+}
 
 const Navbar = () => {
   // State to track the login status
   const [loginCheck, setLoginCheck] = useState(false);
+  // added state to store the username
+  const [username, setUsername] = useState<string | null>(null);
 
-  // Function to check if the user is logged in using auth.loggedIn() method
   const checkLogin = () => {
     if (auth.loggedIn()) {
-      setLoginCheck(true); // Set loginCheck to true if user is logged in
+      setLoginCheck(true);
+      try {
+        const token = localStorage.getItem("id_token");
+        if (token) {
+          const decoded = jwtDecode(token) as JwtPayload;
+          setUsername(decoded.username);
+        } else {
+          setUsername("Guest");
+        }
+      } catch (error) {
+        console.error("Error decoding JWT:", error);
+        setUsername("Guest");
+      }
     }
   };
 
@@ -22,12 +41,8 @@ const Navbar = () => {
   return (
     <div className="display-flex justify-space-between align-center py-2 px-5 mint-green">
       {/* TODO: In h1 element, say "Fork in the Road." and "Welcome" then the user that is logged in using user from local storage */}
-      <h1 className="text-4xl">
-        Fork in the Road. Welcome,{" "}
-        {localStorage.getItem("user")
-          ? JSON.parse(localStorage.getItem("user") || '""')
-          : "Guest"}
-      </h1>
+      <h1 className="text-4xl">Fork in the Road</h1>
+      <h2 className="text-2xl">{`Welcome ${username}`}</h2>
       <div>
         {
           // Conditional rendering based on loginCheck state

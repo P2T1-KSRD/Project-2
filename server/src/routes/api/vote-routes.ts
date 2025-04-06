@@ -2,7 +2,6 @@ import express from "express";
 import { ValidationError } from "sequelize";
 import type { Request, Response } from "express";
 import { User, Vote } from "../../models/index.js";
-import { authenticateToken } from "../../middleware/auth.js";
 
 const router = express.Router();
 
@@ -40,7 +39,7 @@ router.get("/users/:userID", async (req: Request, res: Response) => {
 });
 
 // POST /votes - Create a new vote
-router.post("/", authenticateToken, async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   // extract username from the JWT request header
   const { restaurantID } = req.body;
   const username: string = req.user?.username ?? "";
@@ -78,6 +77,40 @@ router.post("/", authenticateToken, async (req: Request, res: Response) => {
         .json({ message: "You have already voted for this restaurant." });
     }
     return res.status(400).json({ message: error.message });
+  }
+});
+
+// DELETE /votes/:id - Delete a vote by id
+router.delete("/", async (req: Request, res: Response) => {
+  const { restaurantID } = req.body;
+  const username: string = req.user?.username ?? "";
+  if (!username) {
+    return res.status(400).json({ message: "Username is required" });
+  }
+
+  try {
+    const user = await User.findOne({
+      where: {
+        username: username,
+      },
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const userID = user.id;
+    const vote = await Vote.findOne({
+      where: {
+        userID,
+        restaurantID,
+      },
+    });
+    if (!vote) {
+      return res.status(404).json({ message: "Vote not found" });
+    }
+    await vote.destroy();
+    return res.json({ message: "Vote deleted" });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
   }
 });
 

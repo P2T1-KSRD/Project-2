@@ -13,8 +13,8 @@ const router = express.Router();
 router.get("/", async (_req: Request, res: Response) => {
   try {
     const restaurants = await Restaurant.findAll();
-    calculateAllRestaurantRatings(restaurants);
-    sortRestaurantRatingsInDescendingOrder(restaurants);
+    await calculateAllRestaurantRatings(restaurants);
+    await sortRestaurantRatingsInDescendingOrder(restaurants);
     res.json(restaurants);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
