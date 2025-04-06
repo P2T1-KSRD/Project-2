@@ -3,5 +3,5 @@ export interface RestaurantData {
   cuisine: string | null;
   address: string | null;
   rating: number | null;
-  price: string | null; 
-  }
+  price: string | null;
+}

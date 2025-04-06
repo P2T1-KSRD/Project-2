@@ -31,10 +31,13 @@ const Login = () => {
     try {
       // Call the login API endpoint with loginData
       const data = await login(loginData);
+      const username = loginData.username;
+      localStorage.setItem("user", JSON.stringify(username)); // Store user data in localStorage
       // If login is successful, call Auth.login to store the token in localStorage
       Auth.login(data.token);
       console.log("navigating...");
-      navigate("/addrestaurant");
+
+      navigate("/"); // Redirect to the home page after successful login
     } catch (err) {
       console.error("Failed to login", err); // Log any errors that occur during login
     }
