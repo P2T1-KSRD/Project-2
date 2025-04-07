@@ -2,6 +2,7 @@ import { useState, useEffect, useLayoutEffect } from "react";
 import { retrieveUsers } from "../api/userAPI";
 import type { UserData } from "../interfaces/UserData";
 import ErrorPage from "./ErrorPage";
+
 import UserList from '../components/Users';
 import auth from '../utils/auth';
 import fork from '../assets/fork.jpg';  
@@ -9,38 +10,32 @@ import fork from '../assets/fork.jpg';
 const Home = () => {
     
 
-    const [users, setUsers] = useState<UserData[]>([]);
-    const [error, setError] = useState(false);
-    const [loginCheck, setLoginCheck] = useState(false);
+import UserList from "../components/Users";
+import auth from "../utils/auth";
+import { useNavigate } from "react-router-dom";
 
-    useEffect(() => {
-        if (loginCheck) {
-            fetchUsers();
-        }
-    }, [loginCheck]);
+const Home = () => {
+  const [users, setUsers] = useState<UserData[]>([]);
+  const [error, setError] = useState(false);
+  const [loginCheck, setLoginCheck] = useState(false);
+  const navigate = useNavigate();
 
-    useLayoutEffect(() => {
-        checkLogin();
-    }, []);
 
-    const checkLogin = () => {
-        if (auth.loggedIn()) {
-            setLoginCheck(true);
-        }
-    };
-
-    const fetchUsers = async () => {
-        try {
-            const data = await retrieveUsers();
-            setUsers(data)
-        } catch (err) {
-            console.error('Failed to retrieve tickets:', err);
-            setError(true);
-        }
+  useEffect(() => {
+    if (loginCheck) {
+      fetchUsers();
     }
+  }, [loginCheck]);
 
-    if (error) {
-        return <ErrorPage />;
+  useLayoutEffect(() => {
+    // This will run before the DOM is painted
+    checkLogin(); // Check if the user is logged in
+  }, []);
+
+  const checkLogin = () => {
+    if (auth.loggedIn()) {
+      setLoginCheck(true); // User is logged in
+      navigate("/"); // Redirect to home page
     }
 return (
   <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${fork})` }}>
@@ -58,6 +53,7 @@ return (
   </div>
 );
 
+/*
     return (
         <>
             {
@@ -73,5 +69,6 @@ return (
         </>
     );
 };
+*/
 
 export default Home;

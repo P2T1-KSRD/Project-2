@@ -1,6 +1,6 @@
 import { Restaurant } from "../models/index.js";
 
-export const seedrestaurants = async () => {
+export const seedRestaurants = async () => {
   await Restaurant.bulkCreate(
     [
       {
