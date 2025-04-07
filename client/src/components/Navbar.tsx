@@ -89,9 +89,7 @@ const handleLogout = () => {
   
         {/* Mobile sidebar menu */}
         <div className={`mobile-sidebar ${menuOpen ? "open" : ""}`}>
-        <button className="close-btn" onClick={() => setMenuOpen(false)}>
-          <X size={28} />
-        </button>
+        
         {!loginCheck ? (
           <>
             <Link to="/login" onClick={() => setMenuOpen(false)}>Log In</Link>
