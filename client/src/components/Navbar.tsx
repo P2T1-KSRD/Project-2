@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import auth from "../utils/auth";
+import forkLogo from '../assets/forklogo.png';
 // installed this module so we can decode the JWT on the client side
 import { jwtDecode } from "jwt-decode";
+import { Menu, X } from "lucide-react";
 
 interface JwtPayload {
   username: string;
@@ -14,6 +16,7 @@ const Navbar = () => {
   const [loginCheck, setLoginCheck] = useState(false);
   // added state to store the username
   const [username, setUsername] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const checkLogin = () => {
     if (auth.loggedIn()) {
@@ -31,59 +34,80 @@ const Navbar = () => {
         setUsername("Guest");
       }
     }
+    
   };
 
   // useEffect hook to run checkLogin() on component mount and when loginCheck state changes
   useEffect(() => {
     checkLogin(); // Call checkLogin() function to update loginCheck state
   }, [loginCheck]); // Dependency array ensures useEffect runs when loginCheck changes
+  
+const handleLogout = () => {
+      auth.logout();
+      setMenuOpen(false); // close menu on logout
+    };
 
-  return (
-    <div className="display-flex justify-space-between align-center py-2 px-5 mint-green">
-      {/* TODO: In h1 element, say "Fork in the Road." and "Welcome" then the user that is logged in using user from local storage */}
-      <h1 className="text-4xl">Fork in the Road</h1>
-      <h2 className="text-2xl">{`Welcome ${username}`}</h2>
-      <div>
-        {
-          // Conditional rendering based on loginCheck state
-          !loginCheck ? (
-            // Render login button if user is not logged in
+    return (
+      <div className="banner">
+        <div className="logo">
+          <img src={forkLogo} alt="Fork in the Road logo" className="logo-img" />
+          <h1 className="text-4xl">Fork in the Road</h1>
+        </div>
+        <h2 className="welcome">{`Welcome ${username}!`}</h2>
+  
+        {/* Mobile menu toggle button */}
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+  
+        {/* Desktop navbar */}
+        <div className="navbar">
+          {!loginCheck ? (
             <>
               <button className="btn">
-                <Link to="/login">Log In</Link>
+                <Link className="link-text" to="/login">Log In</Link>
               </button>
               <button className="btn">
-                <Link to="/signup">Sign Up</Link>
+                <Link className="link-text" to="/signup">Sign Up</Link>
               </button>
             </>
           ) : (
-            // Render logout button if user is logged in
             <>
-              <button
-                className="btn"
-                type="button"
-                onClick={() => {
-                  auth.logout(); // Call logout() method from auth utility on button click
-                }}
-              >
-                Logout
+              <button className="btn" onClick={handleLogout}>Logout</button>
+              <button className="btn">
+                <Link className="link-text" to="/browse">Browse</Link>
               </button>
               <button className="btn">
-                <Link to="/browse">Browse</Link>
+                <Link className="link-text" to="/addrestaurant">Add Restaurant</Link>
               </button>
               <button className="btn">
-                <Link to="/addrestaurant">Add Restaurant</Link>
-              </button>
-
-              <button className="btn">
-                <Link to="/">Home</Link>
+                <Link className="link-text" to="/">Home</Link>
               </button>
             </>
-          )
-        }
+          )}
+        </div>
+  
+        {/* Mobile sidebar menu */}
+        <div className={`mobile-sidebar ${menuOpen ? "open" : ""}`}>
+        <button className="close-btn" onClick={() => setMenuOpen(false)}>
+          <X size={28} />
+        </button>
+        {!loginCheck ? (
+          <>
+            <Link to="/login" onClick={() => setMenuOpen(false)}>Log In</Link>
+            <Link to="/signup" onClick={() => setMenuOpen(false)}>Sign Up</Link>
+          </>
+        ) : (
+          <>
+            <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+            <Link to="/browse" onClick={() => setMenuOpen(false)}>Browse</Link>
+            <Link to="/addrestaurant" onClick={() => setMenuOpen(false)}>Add Restaurant</Link>
+            <button onClick={handleLogout}>Logout</button>
+          </>
+          )}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default Navbar;
