@@ -3,12 +3,14 @@ import { RestaurantData } from "../interfaces/RestaurantData";
 import { retrieveRestaurants } from "../api/restaurantAPI";
 import { createVote, deleteVote } from "../api/voteAPI";
 import ErrorPage from "../pages/ErrorPage";
+import ForkItButton from "./ForkItButton";
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState<RestaurantData[]>([]);
   const [error, setError] = useState(false);
   const [upvote, setUpvote] = useState(false);
   const [downvote, setDownvote] = useState(false);
+  const [forkItRestaurant, setForkItRestaurant] = useState<RestaurantData | null>(null);
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -24,6 +26,15 @@ const RestaurantList = () => {
     fetchRestaurants();
   }, [upvote, downvote]);
 
+  const handleForkIt = () => {
+    if (restaurants.length > 0) {
+      const randomIndex = Math.floor(Math.random() * restaurants.length);
+      const randomRestaurant = restaurants[randomIndex];
+      setForkItRestaurant(randomRestaurant);
+      console.log(`🍴 Fork It Pick: ${randomRestaurant.name}`);
+    }
+  };
+
   if (error) {
     return <ErrorPage />;
   }
@@ -31,6 +42,22 @@ const RestaurantList = () => {
   return (
     <div className="restaurant-list">
       <h1>Restaurant List</h1>
+
+      {/* Fork It Button */}
+      <ForkItButton onPick={handleForkIt} />
+
+      {/* Fork It Restaurant Display */}
+      {forkItRestaurant && (
+        <div className="forkit-restaurant">
+          <h2>🍴 Fork It 🍴</h2>
+          <h3>{forkItRestaurant.name}</h3>
+          <p>Cuisine: {forkItRestaurant.cuisine}</p>
+          <p>Address: {forkItRestaurant.address}</p>
+          <p>Rating: {forkItRestaurant.rating}</p>
+          <p>Price: {forkItRestaurant.price}</p>
+        </div>
+      )}
+
       <ul>
         {restaurants.map((restaurant) => (
           <div key={restaurant.id}>
@@ -52,9 +79,7 @@ const RestaurantList = () => {
                   console.log(`Upvoted restaurant with ID: ${restaurant.id}`);
                   setUpvote(!upvote);
                 } else {
-                  console.error(
-                    "Restaurant ID is undefined, cannot create vote."
-                  );
+                  console.error("Restaurant ID is undefined, cannot create vote.");
                 }
               }}
             >
@@ -71,9 +96,7 @@ const RestaurantList = () => {
                   console.log(`Downvoted restaurant with ID: ${restaurant.id}`);
                   setDownvote(!downvote);
                 } else {
-                  console.error(
-                    "Restaurant ID is undefined, cannot delete vote."
-                  );
+                  console.error("Restaurant ID is undefined, cannot delete vote.");
                 }
               }}
             >
