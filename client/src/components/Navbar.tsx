@@ -64,37 +64,27 @@ const Navbar = () => {
       <div className="navbar">
         {!loginCheck ? (
           <>
-            <button className="btn">
-              <Link className="link-text" to="/login">
-                Log In
-              </Link>
-            </button>
-            <button className="btn">
-              <Link className="link-text" to="/signup">
-                Sign Up
-              </Link>
-            </button>
+            <Link className="btnlink link-text" to="/login">
+              Log In
+            </Link>
+            <Link className="btnlink link-text" to="/signup">
+              Sign Up
+            </Link>
           </>
         ) : (
           <>
-            <button className="btn" onClick={handleLogout}>
+            <button className="btnlink" onClick={handleLogout}>
               Logout
             </button>
-            <button className="btn">
-              <Link className="link-text" to="/browse">
-                Browse
-              </Link>
-            </button>
-            <button className="btn">
-              <Link className="link-text" to="/addrestaurant">
-                Add Restaurant
-              </Link>
-            </button>
-            <button className="btn">
-              <Link className="link-text" to="/">
-                Home
-              </Link>
-            </button>
+            <Link className="btnlink link-text" to="/browse">
+              Browse
+            </Link>
+            <Link className="btnlink link-text" to="/addrestaurant">
+              Add Restaurant
+            </Link>
+            <Link className="btnlink link-text" to="/">
+              Home
+            </Link>
           </>
         )}
       </div>
