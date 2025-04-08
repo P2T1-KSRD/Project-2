@@ -43,8 +43,10 @@ const RestaurantList = () => {
     <div className="restaurant-list">
       <h1>Restaurant List</h1>
 
+<div className="forkit">
       {/* Fork It Button */}
       <ForkItButton onPick={handleForkIt} />
+</div>
 
       {/* Fork It Restaurant Display */}
       {forkItRestaurant && (
@@ -58,16 +60,17 @@ const RestaurantList = () => {
         </div>
       )}
 
-      <ul>
+      <div className="restaurant-grid">
         {restaurants.map((restaurant) => (
           <div key={restaurant.id}>
-            <li>
+           <div className="restaurant-card">
               <h2>{restaurant.name}</h2>
               <p>Cuisine: {restaurant.cuisine}</p>
               <p>Address: {restaurant.address}</p>
               <p>Rating: {restaurant.rating}</p>
               <p>Price: {restaurant.price}</p>
-            </li>
+          
+          <div className="button-group">
             <button
               className="toggle-upvote-btn"
               onClick={() => {
@@ -102,9 +105,11 @@ const RestaurantList = () => {
             >
               Downvote
             </button>
+            </div>
+          </div>
           </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
