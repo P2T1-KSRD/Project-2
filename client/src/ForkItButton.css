@@ -2,8 +2,9 @@
 
 .forkit-btn {
     background-color: #ff6b6b;
+    align-items: center;
     color: #ffffff;
-    font-size: 1rem;
+    font-size: 2rem;
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 8px;
@@ -12,6 +13,13 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
+
+.forkit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
   .forkit-btn:hover {
     background-color: #ff4c4c;
     transform: translateY(-3px);
