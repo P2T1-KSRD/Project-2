@@ -13,6 +13,7 @@ const router = express.Router();
 router.get("/", async (_req: Request, res: Response) => {
   try {
     const restaurants = await Restaurant.findAll();
+    console.log("Restaurants fetched:", restaurants);
     await calculateAllRestaurantRatings(restaurants);
     await sortRestaurantRatingsInDescendingOrder(restaurants);
     res.json(restaurants);

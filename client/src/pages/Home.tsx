@@ -6,12 +6,6 @@ import ErrorPage from "./ErrorPage";
 import UserList from '../components/Users';
 import auth from '../utils/auth';
 import fork from '../assets/fork.jpg';  
-
-const Home = () => {
-    
-
-import UserList from "../components/Users";
-import auth from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -37,6 +31,7 @@ const Home = () => {
       setLoginCheck(true); // User is logged in
       navigate("/"); // Redirect to home page
     }
+  }
 return (
   <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${fork})` }}>
     {
@@ -53,22 +48,21 @@ return (
   </div>
 );
 
-/*
-    return (
-        <>
-            {
-                !loginCheck ? (
-                    <div className='login-notice'>
-                        <h1>
-                        Let’s Find Your Next Bite
-                        </h1>
-                    </div>
-                ) : (
-                    <UserList users={users} />
-                )}
-        </>
-    );
+  if (error) {
+    return <ErrorPage />;
+  }
+
+  //   return null;
+
+  return (
+    <div className="home-container">
+      <h1>Welcome to Fork in the Road!</h1>
+      <h2>Let fate pick your plate.</h2>
+      {loginCheck && <UserList users={users} />}
+      {!loginCheck && <p>Please log in/sign up to get started!</p>}
+    </div>
+  );
 };
-*/
+
 
 export default Home;

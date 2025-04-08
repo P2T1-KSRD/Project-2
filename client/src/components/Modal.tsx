@@ -11,10 +11,11 @@ const Modal: React.FC<ModalProps> = ({ onAddAnother, onBrowse }) => {
             <div className="modal-content">
                 <h2>Restaurant Added!</h2>
                 <p>Would you like to add another suggestion or browse your options?</p>
-            </div>
+
             <div className="modal-actions">
                 <button onClick={onAddAnother}>Add Another</button>
                 <button onClick={onBrowse}>Browse Options</button>
+            </div>
             </div>
         </div>
     );

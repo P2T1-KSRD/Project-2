@@ -5,7 +5,7 @@ import RestaurantList from "../components/Restaurants";
 const Browse = () => {
   return (
     <section>
-      <h1>Browse Restaurants Here</h1>
+      <h1 className="browse">Browse Restaurants Here</h1>
       <div className="restaurant-list">
         <RestaurantList />
       </div>
