@@ -1,0 +1,60 @@
+/* ForkItButton.css */
+
+.forkit-btn {
+    background-color: #ff6b6b;
+    align-items: center;
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+
+.forkit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+  .forkit-btn:hover {
+    background-color: #ff4c4c;
+    transform: translateY(-3px);
+  }
+  
+  .forkit-btn:active {
+    background-color: #e63946;
+    transform: translateY(0);
+  }
+  
+  /* Styling for the displayed picked restaurant */
+  .forkit-restaurant {
+    background-color: #fff3f3;
+    border: 2px dashed #ff6b6b;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.2);
+    text-align: center;
+  }
+  
+  .forkit-restaurant h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    color: #ff4c4c;
+  }
+  
+  .forkit-restaurant h3 {
+    font-size: 1.3rem;
+    color: #333;
+  }
+  
+  .forkit-restaurant p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+  }
+  

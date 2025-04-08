@@ -49,9 +49,9 @@ const Home = () => {
   return (
     <div className="home-container">
       <h1>Welcome to Fork in the Road!</h1>
-      <h2>Meet our Users</h2>
+      <h2>Let fate pick your plate.</h2>
       {loginCheck && <UserList users={users} />}
-      {!loginCheck && <p>Please log in to see the user list.</p>}
+      {!loginCheck && <p>Please log in/sign up to get started!</p>}
     </div>
   );
 };

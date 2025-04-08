@@ -5,7 +5,8 @@ import {
   calculateRestaurantRating,
   calculateAllRestaurantRatings,
   sortRestaurantRatingsInDescendingOrder,
-} from "../../services/ratingService.js";
+} from "../../services/ratingServices.js";
+import { chooseRandomRestaurant } from "../../services/restaurantServices.js";
 
 const router = express.Router();
 
@@ -13,9 +14,22 @@ const router = express.Router();
 router.get("/", async (_req: Request, res: Response) => {
   try {
     const restaurants = await Restaurant.findAll();
+    console.log("Restaurants fetched:", restaurants);
     await calculateAllRestaurantRatings(restaurants);
     await sortRestaurantRatingsInDescendingOrder(restaurants);
     res.json(restaurants);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// GET /restaurant/random - Get random restaurant
+router.get("/random", async (_req: Request, res: Response) => {
+  try {
+    const restaurants = await Restaurant.findAll();
+    console.log("Restaurants fetched:", restaurants);
+    const randomRestaurant = await chooseRandomRestaurant(restaurants);
+    res.json(randomRestaurant);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

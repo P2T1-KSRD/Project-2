@@ -9,23 +9,23 @@ interface UserListProps {
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
   return (
-    <>
+    <div className="user-grid">
       {users &&
         users.map((user) => (
-          <div className="row align-center mb-5" key={user.id}>
-            <div className="col-md-6">
+          <div className="user-container" key={user.id}>
+            <div className="user">
               <h3>
                 {user.id}. {user.username}
               </h3>
             </div>
-            <div className="col-md-6">
+            <div className="user-email">
               <h4>
                 <a href={`mailto:${user.email}`}>{user.email}</a>
               </h4>
             </div>
           </div>
         ))}
-    </>
+    </div>
   );
 };
 
