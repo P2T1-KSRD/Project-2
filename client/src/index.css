@@ -89,7 +89,7 @@
     border: none !important;
     font-family: 'Domine', serif;
     justify-content: center;
-    margin-bottom: auto;
+    /* margin-bottom: auto; */
     margin-top: 0;
   }
   
@@ -99,10 +99,7 @@
     color: white;
   }
   
-  .btn:hover {
-    background-color: var(--light);
-    color: white;
-  }
+
 
   /*hamburger*/
   .mobile-sidebar {
@@ -252,6 +249,7 @@
     width: 100%;
   }
   
+  .btnlink:hover,
   button:hover {
     background-color: rgba(251, 179, 45, 0.762);
   }
