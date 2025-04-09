@@ -4,8 +4,8 @@ import RestaurantList from "../components/Restaurants";
 
 const Browse = () => {
   return (
-    <section>
-      <h1 className="browse">Browse Restaurants Here</h1>
+    <section className="browse-page">
+      <h1 className="browse">Browse Restaurants Here!</h1>
       <div className="restaurant-list">
         <RestaurantList />
       </div>
