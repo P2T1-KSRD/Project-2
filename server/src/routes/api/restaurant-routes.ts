@@ -126,7 +126,7 @@ router.post("/bulk", async (req: Request, res: Response) => {
         {
           params: {
             location: `${lat},${lng}`,
-            radius: radius,
+            radius: radius * 1069, // Convert meters to miles
             type: "restaurant",
             key: process.env.GOOGLE_PLACES_API_KEY,
           },
