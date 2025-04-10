@@ -133,22 +133,35 @@ router.post("/bulk", async (req: Request, res: Response) => {
         }
       );
       const places = response.data.results;
-      console.log("Places fetched:", places);
       if (places.length === 0) {
         return res.status(404).json({
           message: "No restaurants found in the specified area.",
         });
       }
-
+      console.log("PLACES: ", places);
       // Map the places to the restaurant model
-      const restaurants = places.map((place: any) => ({
-        name: place.name,
-        cuisine: place.types.join(", "),
-        address: place.vicinity,
-        rating: (place.rating / 5) * 100,
-        price: place.price_level,
-      }));
+      const restaurants = places
+        .filter((place: any) => place)
+        .map((place: any) => ({
+          name: place?.name,
+          cuisine: place?.types.join(", "),
+          address: place?.vicinity,
+          rating: (place?.rating / 5) * 100,
+          // Convert Google rating (0-5) to percentage ($$$)
+          price: place?.price_level
+            ? place?.price_level < "2"
+              ? "$"
+              : place?.price_level < "3"
+              ? "$$"
+              : place?.price_level < "4"
+              ? "$$$"
+              : place?.price_level < "5"
+              ? "$$$$"
+              : ""
+            : "",
+        }));
 
+      console.log("Restaurants to be created:", restaurants);
       // Bulk create restaurants in the database
       await Restaurant.bulkCreate(restaurants);
 

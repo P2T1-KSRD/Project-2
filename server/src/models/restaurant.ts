@@ -56,7 +56,7 @@ export function RestaurantFactory(sequelize: Sequelize): typeof Restaurant {
       },
       price: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {
