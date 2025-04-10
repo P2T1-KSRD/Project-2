@@ -4,7 +4,7 @@ import Auth from "../utils/auth";
 // Retrieve Restaurants (already existing)
 const retrieveRestaurants = async () => {
   try {
-    const response = await fetch('/api/restaurants', {
+    const response = await fetch("/api/restaurants", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${Auth.getToken()}`,
@@ -48,6 +48,35 @@ const createRestaurant = async (restaurantInfo: RestaurantData) => {
   }
 };
 
+const bulkCreateRestaurants = async (bulkData: {
+  zipCode: string;
+  radius: string;
+}) => {
+  try {
+    const response = await fetch("/api/restaurants/bulk", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Auth.getToken()}`,
+      },
+      body: JSON.stringify(bulkData),
+    });
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    console.log("Bulk data: ", bulkData);
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error: ${errorData.message}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log("Error from bulk creation ", err);
+    return Promise.reject("Could not complete bulk creation.");
+  }
+};
+
 // ⬇️ NEW Delete Restaurant Method
 const deleteRestaurant = async (restaurantId: number) => {
   try {
@@ -72,4 +101,9 @@ const deleteRestaurant = async (restaurantId: number) => {
   }
 };
 
-export { createRestaurant, retrieveRestaurants, deleteRestaurant };
+export {
+  createRestaurant,
+  retrieveRestaurants,
+  deleteRestaurant,
+  bulkCreateRestaurants,
+};

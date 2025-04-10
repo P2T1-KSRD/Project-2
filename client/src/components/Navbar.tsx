@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import auth from "../utils/auth";
 import forkLogo from "../assets/forklogo.png";
 // installed this module so we can decode the JWT on the client side
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+
 import { Menu, X } from "lucide-react";
 
 interface JwtPayload {
@@ -119,7 +120,11 @@ const Navbar: React.FC<NavbarProps> = ({ toggleDarkMode, darkMode}) => {
             <Link className="btnlink link-text" to="/" aria-label="Home">
               Home
             </Link>
-            <button className="btnlink" onClick={handleLogout} aria-label="Logout">
+            <button
+              className="btnlink"
+              onClick={handleLogout}
+              aria-label="Logout"
+            >
               Logout
               </button>
               <button
@@ -147,10 +152,18 @@ const Navbar: React.FC<NavbarProps> = ({ toggleDarkMode, darkMode}) => {
       >
         {!loginCheck ? (
           <>
-            <Link to="/login" onClick={() => setMenuOpen(false)} aria-label="Log In">
+            <Link
+              to="/login"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Log In"
+            >
               Log In
             </Link>
-            <Link to="/signup" onClick={() => setMenuOpen(false)} aria-label="Sign Up">
+            <Link
+              to="/signup"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Sign Up"
+            >
               Sign Up
             </Link>
           </>

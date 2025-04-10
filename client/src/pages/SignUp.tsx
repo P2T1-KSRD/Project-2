@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Auth from '../utils/auth';  // Import the Auth utility for managing authentication state
-import { signup } from "../api/authAPI";  // Import the login function from the API
-import { UserSignup } from "../interfaces/UserSignup";  // Import the interface for UserLogin
+import Auth from "../utils/auth"; // Import the Auth utility for managing authentication state
+import { signup } from "../api/authAPI"; // Import the login function from the API
 
 const SignUp = () => {
-    const [signUpData, setsignUpData] = useState ({
-        username: "",
-        email: "",
-        password: "",
-    });
+  const [signUpData, setsignUpData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
-    const [error, setError] = useState("");
-    
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const [error, setError] = useState("");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setsignUpData({
       ...signUpData,
@@ -32,7 +33,7 @@ const SignUp = () => {
       const navigate = useNavigate();
       navigate("/addrestaurant");
     } catch (err) {
-      console.error('Failed to login', err);  // Log any errors that occur during login
+      setError("Failed to sign up. Please try again.");
     }
   };
   return (
