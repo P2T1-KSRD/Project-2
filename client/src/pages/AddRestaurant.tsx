@@ -101,7 +101,7 @@ const AddRestaurant = () => {
               />
             </div>
             <div>
-              <label htmlFor="radius">Radius (meters):</label>
+              <label htmlFor="radius">Radius (miles):</label>
               <input
                 type="text"
                 id="radius"
