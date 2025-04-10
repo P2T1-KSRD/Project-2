@@ -72,9 +72,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <button className="btnlink" onClick={handleLogout}>
-              Logout
-            </button>
+        
             <Link className="btnlink link-text" to="/browse">
               Browse
             </Link>
@@ -84,6 +82,9 @@ const Navbar = () => {
             <Link className="btnlink link-text" to="/">
               Home
             </Link>
+            <button className="btnlink" onClick={handleLogout}>
+              Logout
+            </button>
           </>
         )}
       </div>

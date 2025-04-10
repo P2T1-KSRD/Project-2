@@ -89,7 +89,7 @@
     border: none !important;
     font-family: 'Domine', serif;
     justify-content: center;
-    margin-bottom: auto;
+    /* margin-bottom: auto; */
     margin-top: 0;
   }
   
@@ -99,10 +99,7 @@
     color: white;
   }
   
-  .btn:hover {
-    background-color: var(--light);
-    color: white;
-  }
+
 
   /*hamburger*/
   .mobile-sidebar {
@@ -252,6 +249,7 @@
     width: 100%;
   }
   
+  .btnlink:hover,
   button:hover {
     background-color: rgba(251, 179, 45, 0.762);
   }
@@ -362,6 +360,7 @@ h1.browse {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
     max-width: 400px;
+    position: relative;
   }
   
   .restaurant-card:hover {
@@ -408,6 +407,22 @@ h1.browse {
   
   .toggle-downvote-btn:hover {
     background-color: #e07821;
+  }
+  
+  .delete-restaurant-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: red;
+    transition: color 0.3s ease;
+  }
+  
+  .delete-restaurant-btn:hover {
+    color: darkred;
   }
   
   /*fork it button*/
@@ -578,8 +593,8 @@ h1.browse {
   }
 
   
-  
-  @media only screen and (max-width: 768px) {
+
+  @media only screen and (max-width: 1110px) {
     /* Header adjustments */
     .banner {
       flex-direction: column;
@@ -661,7 +676,10 @@ h1.browse {
         font-size: 1.5rem;
         cursor: pointer;
       }
+  }
   
+  @media only screen and (max-width: 768px) {
+    
     /* Home container adjustments */
     .home-container {
       padding: 1.5rem;
@@ -724,4 +742,24 @@ h1.browse {
         font-size: 1.5rem;
       }
     
+      .user-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+
+      /*BROWSE PAGE*/
+
+      main.container.pt-5 {
+        padding: 0px;
+      }
+
+      h1.browse {
+        font-size: 2rem;
+        padding: 40px;
+        margin-right: 0px;
+       }
+      
+       .browse-page {
+        padding: 0px;
+        max-width: 100%;
+       }
   }

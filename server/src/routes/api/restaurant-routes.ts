@@ -75,6 +75,26 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
+// DELETE /restaurant/:id - Delete a restaurant by id
+router.delete("/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const restaurant = await Restaurant.findByPk(id);
+
+    if (!restaurant) {
+      return res.status(404).json({ message: "Restaurant not found" });
+    }
+
+    await restaurant.destroy();
+
+    return res.status(204).send(); // No Content
+  } catch (error) {
+    console.error("Error deleting restaurant:", error);
+    return res.status(500).json({ message: "Failed to delete restaurant" });
+  }
+});
+
 // POST /restaurants/bulk - Create multiple restaurants from Google Places API
 // This endpoint is used to fetch restaurants based on a ZIP code and radius
 // and create them in the database.
