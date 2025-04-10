@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import auth from "../utils/auth";
 import forkLogo from "../assets/forklogo.png";
 // installed this module so we can decode the JWT on the client side
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { Menu, X } from "lucide-react";
 
 interface JwtPayload {

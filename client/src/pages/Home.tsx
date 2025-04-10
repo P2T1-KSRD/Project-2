@@ -14,6 +14,16 @@ const Home = () => {
   const [loginCheck, setLoginCheck] = useState(false);
   const navigate = useNavigate();
 
+  const fetchUsers = async () => {
+    try {
+      const response = await retrieveUsers();
+      setUsers(response.data);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+      setError(true);
+    }
+  };
+
 
   useEffect(() => {
     if (loginCheck) {
@@ -32,21 +42,21 @@ const Home = () => {
       navigate("/"); // Redirect to home page
     }
   }
-return (
-  <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${fork})` }}>
-    {
-      !loginCheck ? (
-        <div className="text-center p-10 bg-white bg-opacity-70 rounded-md max-w-xl mx-auto mt-20">
-          <h1 className="text-3xl font-bold text-green-600 mb-4">
-          Let’s Find Your Next Bite
-          </h1>
-        </div>
-      ) : (
-        <UserList users={users} />
-      )
-    }
-  </div>
-);
+// return (
+//   <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${fork})` }}>
+//     {
+//       !loginCheck ? (
+//         <div className="text-center p-10 bg-white bg-opacity-70 rounded-md max-w-xl mx-auto mt-20">
+//           <h1 className="text-3xl font-bold text-green-600 mb-4">
+//           Let’s Find Your Next Bite
+//           </h1>
+//         </div>
+//       ) : (
+//         <UserList users={users} />
+//       )
+//     }
+//   </div>
+// );
 
   if (error) {
     return <ErrorPage />;

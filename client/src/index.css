@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap');
 :root {
     --orange: #ff9f1c;
     --creamsicle: #ffbf69;
@@ -6,7 +7,6 @@
   }
 
 
-@import url('https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap');
 
   * {
     box-sizing: border-box;
