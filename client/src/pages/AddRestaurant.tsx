@@ -83,7 +83,7 @@ const AddRestaurant = () => {
   return (
     <div className="add-restaurant-container">
       <h2>Add Your Restaurants!</h2>
-      <button onClick={handleToggle} className="toggle-button">
+      <button onClick={handleToggle} className="btnlink">
         {isBulkAdd ? "Add Single Restaurant" : "Add Restaurants by Zip Code"}
       </button>
       <form onSubmit={handleSubmit}>
@@ -160,7 +160,7 @@ const AddRestaurant = () => {
             </div>
           </>
         )}
-        <button type="submit">Submit Suggestion</button>
+        <button type="submit">{isBulkAdd ? "Search" : "Add"}</button>
       </form>
       {showModal && (
         <Modal onAddAnother={handleAddAnother} onBrowse={handleBrowse} />

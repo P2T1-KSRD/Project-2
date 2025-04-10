@@ -13,7 +13,7 @@ const RestaurantList = () => {
   const [upvote, setUpvote] = useState(false);
   const [downvote, setDownvote] = useState(false);
   const [forkItRestaurant, setForkItRestaurant] = useState<RestaurantData | null>(null);
-  const [confetti, setConfetti] = useState(false);
+ const [showConfetti, setshowconfetti] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [restaurantToDelete, setRestaurantToDelete] = useState<number | null>(null);
 
@@ -34,9 +34,7 @@ const RestaurantList = () => {
   }, [upvote, downvote]);
 
   const handleForkIt = () => {
-    setConfetti(true);
-    setTimeout(() => setConfetti(false), 100)
-
+    
     if (restaurants.length > 0) {
       const totalWeight = restaurants.reduce((sum, r) => sum + (r.rating ?? 0), 0);
 
@@ -53,6 +51,7 @@ const RestaurantList = () => {
       }
 
       setForkItRestaurant(selectedRestaurant!);
+      setshowconfetti(true);
     }
   };
 
@@ -96,7 +95,7 @@ const RestaurantList = () => {
           <p>Price: {forkItRestaurant.price}</p>
         </div>
       )}
-
+      {showConfetti && <BurgerConfetti />}
       <div className="restaurant-grid">
         {restaurants.map((restaurant) => (
           <div key={restaurant.id} className="restaurant-card" aria-label={`Details of restaurant ${restaurant.name}`}>
@@ -144,7 +143,7 @@ const RestaurantList = () => {
           </div>
         ))}
       </div>
-      <BurgerConfetti trigger={confetti} />
+    
       <DeleteConfirmationModal 
         show={showModal} 
         onClose={() => setShowModal(false)} 
