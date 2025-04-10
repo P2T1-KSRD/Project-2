@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import auth from "../utils/auth";
 import forkLogo from "../assets/forklogo.png";
 // installed this module so we can decode the JWT on the client side
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import { Menu, X } from "lucide-react";
 
 interface JwtPayload {
@@ -12,7 +12,6 @@ interface JwtPayload {
 }
 
 const Navbar = () => {
-  const token = localStorage.getItem("id_token");
   // State to track the login status
   const [loginCheck, setLoginCheck] = useState(false);
   // added state to store the username
@@ -48,70 +47,104 @@ const Navbar = () => {
   };
 
   return (
-    <div className="banner">
-      <div className="logo">
-        <img src={forkLogo} alt="Fork in the Road logo" className="logo-img" />
+    <div className="banner" aria-label="Main Navigation Bar">
+      <div className="logo" aria-label="Website Logo and Name">
+        <img
+          src={forkLogo}
+          alt="Fork in the Road logo"
+          className="logo-img"
+          aria-hidden="true"
+        />
         <h1 className="text-4xl">Fork in the Road</h1>
       </div>
       <h2 className="welcome">{`Welcome ${username}!`}</h2>
 
       {/* Mobile menu toggle button */}
-      <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+      <button
+        className="menu-toggle"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle navigation menu"
+      >
         {menuOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
 
       {/* Desktop navbar */}
-      <div className="navbar">
+      <div className="navbar" aria-label="Desktop Navigation Links">
         {!loginCheck ? (
           <>
-            <Link className="btnlink link-text" to="/login">
+            <Link className="btnlink link-text" to="/login" aria-label="Log In">
               Log In
             </Link>
-            <Link className="btnlink link-text" to="/signup">
+            <Link
+              className="btnlink link-text"
+              to="/signup"
+              aria-label="Sign Up"
+            >
               Sign Up
             </Link>
           </>
         ) : (
           <>
-            <button className="btnlink" onClick={handleLogout}>
-              Logout
-            </button>
-            <Link className="btnlink link-text" to="/browse">
+            <Link
+              className="btnlink link-text"
+              to="/browse"
+              aria-label="Browse Restaurants"
+            >
               Browse
             </Link>
-            <Link className="btnlink link-text" to="/addrestaurant">
+            <Link
+              className="btnlink link-text"
+              to="/addrestaurant"
+              aria-label="Add Restaurant"
+            >
               Add Restaurant
             </Link>
-            <Link className="btnlink link-text" to="/">
+            <Link className="btnlink link-text" to="/" aria-label="Home">
               Home
             </Link>
+            <button className="btnlink" onClick={handleLogout} aria-label="Logout">
+              Logout
+            </button>
           </>
         )}
       </div>
 
       {/* Mobile sidebar menu */}
-      <div className={`mobile-sidebar ${menuOpen ? "open" : ""}`}>
+      <div
+        className={`mobile-sidebar ${menuOpen ? "open" : ""}`}
+        aria-label="Mobile Navigation Sidebar"
+      >
         {!loginCheck ? (
           <>
-            <Link to="/login" onClick={() => setMenuOpen(false)}>
+            <Link to="/login" onClick={() => setMenuOpen(false)} aria-label="Log In">
               Log In
             </Link>
-            <Link to="/signup" onClick={() => setMenuOpen(false)}>
+            <Link to="/signup" onClick={() => setMenuOpen(false)} aria-label="Sign Up">
               Sign Up
             </Link>
           </>
         ) : (
           <>
-            <Link to="/" onClick={() => setMenuOpen(false)}>
+            <Link to="/" onClick={() => setMenuOpen(false)} aria-label="Home">
               Home
             </Link>
-            <Link to="/browse" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/browse"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Browse Restaurants"
+            >
               Browse
             </Link>
-            <Link to="/addrestaurant" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/addrestaurant"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Add Restaurant"
+            >
               Add Restaurant
             </Link>
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout} aria-label="Logout">
+              Logout
+            </button>
           </>
         )}
       </div>
