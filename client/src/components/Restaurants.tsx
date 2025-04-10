@@ -66,12 +66,12 @@ const RestaurantList = () => {
     <div className="restaurant-list">
       <h1>Restaurant List</h1>
 
-      <div className="forkit">
+      <div className="forkit" aria-label="Fork it button section">
         <ForkItButton onPick={handleForkIt} />
       </div>
 
       {forkItRestaurant && (
-        <div className="forkit-restaurant">
+        <div className="forkit-restaurant" aria-label={`Details of selected restaurant ${forkItRestaurant.name}`}>
           <h2>🍴 Fork It 🍴</h2>
           <h3>{forkItRestaurant.name}</h3>
           <p>Cuisine: {forkItRestaurant.cuisine}</p>
@@ -83,11 +83,13 @@ const RestaurantList = () => {
 
       <div className="restaurant-grid">
         {restaurants.map((restaurant) => (
-          <div key={restaurant.id} className="restaurant-card">
+          <div key={restaurant.id} className="restaurant-card" aria-label={`Details of restaurant ${restaurant.name}`}>
             <button
               className="delete-restaurant-btn"
-              onClick={() => handleDeleteRestaurant(restaurant.id!)}
-              style={{ float: "right", color: "red" }}
+              aria-label={`Delete ${restaurant.name}`}
+              onClick={() => {
+                if (restaurant.id) handleDeleteRestaurant(restaurant.id);
+              }}
             >
               ✕
             </button>
@@ -97,7 +99,7 @@ const RestaurantList = () => {
             <p>Rating: {restaurant.rating}</p>
             <p>Price: {restaurant.price}</p>
 
-            <div className="button-group">
+            <div className="button-group" aria-label={`Voting buttons for ${restaurant.name}`}>
               <button
                 className="toggle-upvote-btn"
                 onClick={() => {
@@ -106,6 +108,7 @@ const RestaurantList = () => {
                     setUpvote(!upvote);
                   }
                 }}
+                aria-label={`Upvote ${restaurant.name}`}
               >
                 Upvote
               </button>
@@ -117,6 +120,7 @@ const RestaurantList = () => {
                     setDownvote(!downvote);
                   }
                 }}
+                aria-label={`Downvote ${restaurant.name}`}
               >
                 Downvote
               </button>
