@@ -9,7 +9,7 @@
     --buttonhover: rgba(251, 179, 45, 0.762);
     --browse: #cbf3f0d7;
     --subheading: #374151;
-    --input: black;
+    --input: rgb(243, 243, 243);
     --BW: white;
     --loginbtn: #2ec4b6;
   }
@@ -528,6 +528,7 @@ h1.browse {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    background-color: var(--banner);
   }
   
   /* Form Field Group */
