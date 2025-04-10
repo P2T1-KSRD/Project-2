@@ -12,7 +12,6 @@ interface JwtPayload {
 }
 
 const Navbar = () => {
-  const token = localStorage.getItem("id_token");
   // State to track the login status
   const [loginCheck, setLoginCheck] = useState(false);
   // added state to store the username

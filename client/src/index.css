@@ -593,8 +593,8 @@ h1.browse {
   }
 
   
-  
-  @media only screen and (max-width: 768px) {
+
+  @media only screen and (max-width: 1110px) {
     /* Header adjustments */
     .banner {
       flex-direction: column;
@@ -676,7 +676,10 @@ h1.browse {
         font-size: 1.5rem;
         cursor: pointer;
       }
+  }
   
+  @media only screen and (max-width: 768px) {
+    
     /* Home container adjustments */
     .home-container {
       padding: 1.5rem;
@@ -739,4 +742,24 @@ h1.browse {
         font-size: 1.5rem;
       }
     
+      .user-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+
+      /*BROWSE PAGE*/
+
+      main.container.pt-5 {
+        padding: 0px;
+      }
+
+      h1.browse {
+        font-size: 2rem;
+        padding: 40px;
+        margin-right: 0px;
+       }
+      
+       .browse-page {
+        padding: 0px;
+        max-width: 100%;
+       }
   }
