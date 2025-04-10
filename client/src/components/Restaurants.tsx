@@ -4,6 +4,8 @@ import { retrieveRestaurants, deleteRestaurant } from "../api/restaurantAPI";
 import { createVote, deleteVote } from "../api/voteAPI";
 import ErrorPage from "../pages/ErrorPage";
 import ForkItButton from "./ForkItButton";
+import BurgerConfetti from "./confetti";
+import DeleteConfirmationModal from "../interfaces/DeleteModal";
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState<RestaurantData[]>([]);
@@ -11,6 +13,11 @@ const RestaurantList = () => {
   const [upvote, setUpvote] = useState(false);
   const [downvote, setDownvote] = useState(false);
   const [forkItRestaurant, setForkItRestaurant] = useState<RestaurantData | null>(null);
+  const [confetti, setConfetti] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [restaurantToDelete, setRestaurantToDelete] = useState<number | null>(null);
+
+
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -27,6 +34,9 @@ const RestaurantList = () => {
   }, [upvote, downvote]);
 
   const handleForkIt = () => {
+    setConfetti(true);
+    setTimeout(() => setConfetti(false), 100)
+
     if (restaurants.length > 0) {
       const totalWeight = restaurants.reduce((sum, r) => sum + (r.rating ?? 0), 0);
 
@@ -46,11 +56,17 @@ const RestaurantList = () => {
     }
   };
 
-  const handleDeleteRestaurant = async (restaurantId: number) => {
-    if (window.confirm("Are you sure you want to delete this restaurant?")) {
+  const handleDeleteRestaurant = (restaurantId: number) => {
+    setRestaurantToDelete(restaurantId);
+    setShowModal(true);
+  }
+   
+  const deletedConfirmed = async () => {
+    if (restaurantToDelete) {
       try {
-        await deleteRestaurant(restaurantId);
-        setRestaurants(restaurants.filter((r) => r.id !== restaurantId));
+        await deleteRestaurant(restaurantToDelete);
+        setRestaurants(restaurants.filter((r) => r.id !== restaurantToDelete));
+        setShowModal(false);
       } catch (error) {
         console.error("Failed to delete restaurant:", error);
         setError(true);
@@ -66,12 +82,12 @@ const RestaurantList = () => {
     <div className="restaurant-list">
       <h1>Restaurant List</h1>
 
-      <div className="forkit">
+      <div className="forkit" aria-label="Fork it button section">
         <ForkItButton onPick={handleForkIt} />
       </div>
 
       {forkItRestaurant && (
-        <div className="forkit-restaurant">
+        <div className="forkit-restaurant" aria-label={`Details of selected restaurant ${forkItRestaurant.name}`}>
           <h2>🍴 Fork It 🍴</h2>
           <h3>{forkItRestaurant.name}</h3>
           <p>Cuisine: {forkItRestaurant.cuisine}</p>
@@ -83,11 +99,13 @@ const RestaurantList = () => {
 
       <div className="restaurant-grid">
         {restaurants.map((restaurant) => (
-          <div key={restaurant.id} className="restaurant-card">
+          <div key={restaurant.id} className="restaurant-card" aria-label={`Details of restaurant ${restaurant.name}`}>
             <button
               className="delete-restaurant-btn"
-              onClick={() => handleDeleteRestaurant(restaurant.id!)}
-              style={{ float: "right", color: "red" }}
+              aria-label={`Delete ${restaurant.name}`}
+              onClick={() => {
+                if (restaurant.id) handleDeleteRestaurant(restaurant.id);
+              }}
             >
               ✕
             </button>
@@ -97,7 +115,7 @@ const RestaurantList = () => {
             <p>Rating: {restaurant.rating}</p>
             <p>Price: {restaurant.price}</p>
 
-            <div className="button-group">
+            <div className="button-group" aria-label={`Voting buttons for ${restaurant.name}`}>
               <button
                 className="toggle-upvote-btn"
                 onClick={() => {
@@ -106,6 +124,7 @@ const RestaurantList = () => {
                     setUpvote(!upvote);
                   }
                 }}
+                aria-label={`Upvote ${restaurant.name}`}
               >
                 Upvote
               </button>
@@ -117,6 +136,7 @@ const RestaurantList = () => {
                     setDownvote(!downvote);
                   }
                 }}
+                aria-label={`Downvote ${restaurant.name}`}
               >
                 Downvote
               </button>
@@ -124,6 +144,12 @@ const RestaurantList = () => {
           </div>
         ))}
       </div>
+      <BurgerConfetti trigger={confetti} />
+      <DeleteConfirmationModal 
+        show={showModal} 
+        onClose={() => setShowModal(false)} 
+        onConfirm={deletedConfirmed} 
+      />
     </div>
   );
 };

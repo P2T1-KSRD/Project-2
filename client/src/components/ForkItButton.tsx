@@ -8,7 +8,11 @@ interface ForkItButtonProps {
 
 const ForkItButton: React.FC<ForkItButtonProps> = ({ onPick }) => {
   return (
-    <button className="forkit-btn" onClick={onPick}>
+    <button 
+      className="forkit-btn" 
+      onClick={onPick} 
+      aria-label="Fork It Button"
+    >
       Fork It
     </button>
   );
