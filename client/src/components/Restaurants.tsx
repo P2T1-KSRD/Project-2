@@ -1,23 +1,28 @@
 import { useState, useEffect } from "react";
 import { RestaurantData } from "../interfaces/RestaurantData";
-import { retrieveRestaurants } from "../api/restaurantAPI";
+import { retrieveRestaurants, deleteRestaurant } from "../api/restaurantAPI";
 import { createVote, deleteVote } from "../api/voteAPI";
 import ErrorPage from "../pages/ErrorPage";
 import ForkItButton from "./ForkItButton";
+import BurgerConfetti from "./confetti";
+import DeleteConfirmationModal from "../interfaces/DeleteModal";
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState<RestaurantData[]>([]);
   const [error, setError] = useState(false);
   const [upvote, setUpvote] = useState(false);
   const [downvote, setDownvote] = useState(false);
-  const [forkItRestaurant, setForkItRestaurant] =
-    useState<RestaurantData | null>(null);
+  const [forkItRestaurant, setForkItRestaurant] = useState<RestaurantData | null>(null);
+  const [confetti, setConfetti] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [restaurantToDelete, setRestaurantToDelete] = useState<number | null>(null);
+
+
 
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
         const data = await retrieveRestaurants();
-        console.log(data[1].rating);
         setRestaurants(data);
       } catch (err) {
         console.error("Failed to retrieve restaurants:", err);
@@ -29,21 +34,16 @@ const RestaurantList = () => {
   }, [upvote, downvote]);
 
   const handleForkIt = () => {
+    setConfetti(true);
+    setTimeout(() => setConfetti(false), 100)
+
     if (restaurants.length > 0) {
-      // const randomIndex = Math.floor(Math.random() * restaurants.length);
-      // const randomRestaurant = restaurants[randomIndex];
-      // setForkItRestaurant(randomRestaurant);
-      console.log(restaurants[1].rating);
+      const totalWeight = restaurants.reduce((sum, r) => sum + (r.rating ?? 0), 0);
 
-      const totalWeight = restaurants.reduce(
-        (sum, r) => sum + (r.rating ?? 0),
-        0
-      );
-
-      let random: number = Math.random() * totalWeight;
-
-      let runningTotal: number = 0;
+      let random = Math.random() * totalWeight;
+      let runningTotal = 0;
       let selectedRestaurant: RestaurantData | null = null;
+
       for (const restaurant of restaurants) {
         runningTotal += restaurant.rating ?? 0;
         if (random <= runningTotal) {
@@ -56,6 +56,24 @@ const RestaurantList = () => {
     }
   };
 
+  const handleDeleteRestaurant = (restaurantId: number) => {
+    setRestaurantToDelete(restaurantId);
+    setShowModal(true);
+  }
+   
+  const deletedConfirmed = async () => {
+    if (restaurantToDelete) {
+      try {
+        await deleteRestaurant(restaurantToDelete);
+        setRestaurants(restaurants.filter((r) => r.id !== restaurantToDelete));
+        setShowModal(false);
+      } catch (error) {
+        console.error("Failed to delete restaurant:", error);
+        setError(true);
+      }
+    }
+  };
+
   if (error) {
     return <ErrorPage />;
   }
@@ -64,14 +82,12 @@ const RestaurantList = () => {
     <div className="restaurant-list">
       <h1>Restaurant List</h1>
 
-<div className="forkit">
-      {/* Fork It Button */}
-      <ForkItButton onPick={handleForkIt} />
-</div>
+      <div className="forkit" aria-label="Fork it button section">
+        <ForkItButton onPick={handleForkIt} />
+      </div>
 
-      {/* Fork It Restaurant Display */}
       {forkItRestaurant && (
-        <div className="forkit-restaurant">
+        <div className="forkit-restaurant" aria-label={`Details of selected restaurant ${forkItRestaurant.name}`}>
           <h2>🍴 Fork It 🍴</h2>
           <h3>{forkItRestaurant.name}</h3>
           <p>Cuisine: {forkItRestaurant.cuisine}</p>
@@ -83,58 +99,57 @@ const RestaurantList = () => {
 
       <div className="restaurant-grid">
         {restaurants.map((restaurant) => (
-          <div key={restaurant.id}>
-           <div className="restaurant-card">
-              <h2>{restaurant.name}</h2>
-              <p>Cuisine: {restaurant.cuisine}</p>
-              <p>Address: {restaurant.address}</p>
-              <p>Rating: {restaurant.rating}</p>
-              <p>Price: {restaurant.price}</p>
-          
-          <div className="button-group">
+          <div key={restaurant.id} className="restaurant-card" aria-label={`Details of restaurant ${restaurant.name}`}>
             <button
-              className="toggle-upvote-btn"
+              className="delete-restaurant-btn"
+              aria-label={`Delete ${restaurant.name}`}
               onClick={() => {
-                if (restaurant.id !== undefined) {
-                  const voteData = {
-                    restaurantID: restaurant.id,
-                  };
-                  createVote(voteData);
-                  console.log(`Upvoted restaurant with ID: ${restaurant.id}`);
-                  setUpvote(!upvote);
-                } else {
-                  console.error(
-                    "Restaurant ID is undefined, cannot create vote."
-                  );
-                }
+                if (restaurant.id) handleDeleteRestaurant(restaurant.id);
               }}
             >
-              Upvote
+              ✕
             </button>
-            <button
-              className="toggle-downvote-btn"
-              onClick={() => {
-                if (restaurant.id !== undefined) {
-                  const voteData = {
-                    restaurantID: restaurant.id,
-                  };
-                  deleteVote(voteData);
-                  console.log(`Downvoted restaurant with ID: ${restaurant.id}`);
-                  setDownvote(!downvote);
-                } else {
-                  console.error(
-                    "Restaurant ID is undefined, cannot delete vote."
-                  );
-                }
-              }}
-            >
-              Downvote
-            </button>
+            <h2>{restaurant.name}</h2>
+            <p>Cuisine: {restaurant.cuisine}</p>
+            <p>Address: {restaurant.address}</p>
+            <p>Rating: {restaurant.rating}</p>
+            <p>Price: {restaurant.price}</p>
+
+            <div className="button-group" aria-label={`Voting buttons for ${restaurant.name}`}>
+              <button
+                className="toggle-upvote-btn"
+                onClick={() => {
+                  if (restaurant.id !== undefined) {
+                    createVote({ restaurantID: restaurant.id });
+                    setUpvote(!upvote);
+                  }
+                }}
+                aria-label={`Upvote ${restaurant.name}`}
+              >
+                Upvote
+              </button>
+              <button
+                className="toggle-downvote-btn"
+                onClick={() => {
+                  if (restaurant.id !== undefined) {
+                    deleteVote({ restaurantID: restaurant.id });
+                    setDownvote(!downvote);
+                  }
+                }}
+                aria-label={`Downvote ${restaurant.name}`}
+              >
+                Downvote
+              </button>
             </div>
-          </div>
           </div>
         ))}
       </div>
+      <BurgerConfetti trigger={confetti} />
+      <DeleteConfirmationModal 
+        show={showModal} 
+        onClose={() => setShowModal(false)} 
+        onConfirm={deletedConfirmed} 
+      />
     </div>
   );
 };
