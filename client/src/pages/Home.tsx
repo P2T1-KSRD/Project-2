@@ -10,7 +10,20 @@ const Home = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [error, setError] = useState(false);
   const [loginCheck, setLoginCheck] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const navigate = useNavigate();
+
+const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => {
+        setShowModal(true);
+        setTimeout(() => setShowModal(false), 3000); // hide after 2 seconds
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
 
   useEffect(() => {
     if (loginCheck) {
@@ -40,6 +53,10 @@ const Home = () => {
     }
   };
 
+  
+  
+  
+
   if (error) {
     return <ErrorPage />;
   }
@@ -52,6 +69,17 @@ const Home = () => {
       <h2>Let fate pick your plate.</h2>
       {loginCheck && <UserList users={users} />}
       {!loginCheck && <p>Please log in/sign up to get started!</p>}
+      <button className="btnlink" onClick={handleCopyLink}>
+  Share with friends!
+</button>
+{showModal && (
+  <div className="friendsmodal">
+    <div className="model-content" >
+      <h3> ✅ Link copied to clipboard! </h3>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

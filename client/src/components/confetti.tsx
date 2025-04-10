@@ -8,7 +8,7 @@ const BurgerConfetti = () => {
     jsConfetti.addConfetti({
       confettiRadius: 6,
       confettiNumber: 200,
-      emojis: ['🍔'],  // Use the burger emoji as confetti
+      emojis: ['🍔', '🥡', '🍕','🧀'],  // Use the burger emoji as confetti
     });
   };
 

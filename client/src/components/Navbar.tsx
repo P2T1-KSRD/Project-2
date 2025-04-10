@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import auth from "../utils/auth";
 import forkLogo from "../assets/forklogo.png";
 // installed this module so we can decode the JWT on the client side
-import jwtDecode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import { Menu, X } from "lucide-react";
 
 interface JwtPayload {
@@ -11,12 +11,29 @@ interface JwtPayload {
   userID: number;
 }
 
-const Navbar = () => {
+interface NavbarProps {
+  toggleDarkMode: (mode: boolean) => void;
+  darkMode: boolean;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ toggleDarkMode, darkMode}) => {
   // State to track the login status
   const [loginCheck, setLoginCheck] = useState(false);
   // added state to store the username
   const [username, setUsername] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+ 
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("darkMode");
+    if (savedTheme === "true") {
+      toggleDarkMode(true);
+    } else {
+      toggleDarkMode(false);
+    }
+  }, [toggleDarkMode]);
+
+  
 
   const checkLogin = () => {
     const token = localStorage.getItem("id_token");
@@ -104,10 +121,24 @@ const Navbar = () => {
             </Link>
             <button className="btnlink" onClick={handleLogout} aria-label="Logout">
               Logout
+              </button>
+              <button
+              className="btnlink"
+              onClick={() => toggleDarkMode(!darkMode)} 
+              aria-label="Toggle Dark Mode"
+            >
+              {darkMode ? (
+                <span className="material-icons">wb_sunny</span>  // Sun icon for light mode
+              ) : (
+                <span className="material-icons">nights_stay</span> // Moon icon for dark mode
+              )}
             </button>
-          </>
+          
+          </> 
         )}
+        
       </div>
+      
 
       {/* Mobile sidebar menu */}
       <div
@@ -145,7 +176,19 @@ const Navbar = () => {
             <button onClick={handleLogout} aria-label="Logout">
               Logout
             </button>
-          </>
+            <button
+              className="btnlink"
+              onClick={() => toggleDarkMode(!darkMode)} 
+              aria-label="Toggle Dark Mode"
+            >
+              {darkMode ? (
+                <span className="material-icons">wb_sunny</span>  // Sun icon for light mode
+              ) : (
+                <span className="material-icons">nights_stay</span> // Moon icon for dark mode
+              )}
+            </button>
+          </> 
+          
         )}
       </div>
     </div>

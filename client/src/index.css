@@ -3,6 +3,15 @@
     --creamsicle: #ffbf69;
     --light: #cbf3f0;
     --dark: #2ec4b6;
+    --darktext: #2ec4b6;
+    --darkbutton: #2ec4b6;
+    --banner: white;
+    --buttonhover: rgba(251, 179, 45, 0.762);
+    --browse: #cbf3f0d7;
+    --subheading: #374151;
+    --input: black;
+    --BW: white;
+    --loginbtn: #2ec4b6;
   }
 
 
@@ -52,7 +61,7 @@
   
   /* HEADER */
   .banner {
-    background-color: white;
+    background-color: var(--banner);
     padding: 1.25rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -64,7 +73,7 @@
   
   .banner h1 {
     font-size: 1.75rem;
-    color: var(--dark);
+    color: var(--darktext);
     font-weight: 700;
     font-family: 'Domine', serif;
   }
@@ -78,11 +87,13 @@
     gap: 1rem;
   }
   
-  .btnlink, 
-  button  {
-    background-color: var(--dark);
+  
+  
+  .btnlink
+    {
+    background-color: var(--darkbutton);
     color: white;
-    padding: .5rem 1.5rem;
+    padding: 10px;
     border-radius: 12px;
     font-size: 1rem;
     font-weight: 500;
@@ -91,17 +102,11 @@
     border: none !important;
     font-family: 'Domine', serif;
     justify-content: center;
-    /* margin-bottom: auto; */
-    margin-top: 0;
-  }
-  
-
-  .link-text {
+    margin-bottom: auto; 
     text-decoration: none;
-    color: white;
-  }
-  
-
+    }
+    
+ 
 
   /*hamburger*/
   .mobile-sidebar {
@@ -125,7 +130,7 @@
     max-width: 800px;
     margin: 4rem auto;
     padding: 2rem;
-    background-color: white;
+    background-color: var(--banner);
     border-radius: 1.5rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     text-align: center;
@@ -146,14 +151,15 @@
   .home-container h2 {
     font-size: 2rem;
     color: var(--orange);
-    margin-bottom: 2rem;
+    margin-bottom: 0;
     font-weight: 600;
   }
   
   .home-container p {
     font-size: 1.1rem;
     color: #555;
-    margin-top: 1rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
   }
 
  /*UserList*/
@@ -189,7 +195,7 @@
     width: 100%;
     max-width: 400px;
     padding: 2rem;
-    background-color: white;
+    background-color: var(--banner);
     border-radius: 1.5rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -220,6 +226,7 @@
   }
   
   .form-input {
+  
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
@@ -240,8 +247,8 @@
   
   /* Login Button Styling */
   button.btn {
-    background-color: var(--dark);
-    color: white;
+    background-color: var(--loginbtn);
+    color: var(--BW);
     padding: 0.75rem 1.5rem;
     font-size: 1.1rem;
     border-radius: 12px;
@@ -251,13 +258,12 @@
     width: 100%;
   }
   
+  button.btn:hover,
   .btnlink:hover,
   button:hover {
-    background-color: rgba(251, 179, 45, 0.762);
+    background-color: var(--buttonhover);
   }
-  button.btn:hover {
-    background-color: rgba(251, 179, 45, 0.762);
-  }
+ 
 
   /*SIGNUP PAGE*/
 
@@ -266,7 +272,8 @@
     max-width: 800px;
     margin: 4rem auto;
     padding: 2rem;
-    background-color: white;
+    background-color: var(--banner);
+
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -308,6 +315,8 @@
     border-radius: 8px;
     outline: none;
     transition: border-color 0.3s ease;
+    background-color: var(--input);
+    color: var(--BW);
   }
   
   form input:focus {
@@ -336,7 +345,7 @@ h1.browse {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
-    background-color: #cbf3f0d7;
+    background-color: var(--browse);
     border-radius: 5%;
     color: var(--dark);
   }
@@ -345,7 +354,7 @@ h1.browse {
   
     font-size: 0.875rem;
     font-weight: 500;  
-    color: #374151;     
+    color: var(--subheading);     
     font-style: italic;
     margin-top: 0.5rem;  
     margin-bottom: 1rem; 
@@ -379,7 +388,7 @@ h1.browse {
   
   
   .restaurant-card {
-    background-color: white;
+    background-color: var(--banner);
     border: 2px solid var(--creamsicle);
     border-radius: 12px;
     padding: 1rem;
@@ -457,7 +466,7 @@ h1.browse {
     align-items: center;
   }
   
-  
+/*   
   button {
     background-color: var(--dark);
     color: white;
@@ -469,7 +478,7 @@ h1.browse {
     transition: background-color 0.3s ease;
     margin-top: 1rem;
     border: none;
-  }
+  } */
   
   
   
@@ -500,7 +509,7 @@ h1.browse {
     max-width: 800px;
     margin: 4rem auto;
     padding: 2rem;
-    background-color: white;
+    background-color: var(--banner);
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -535,14 +544,7 @@ h1.browse {
     margin-bottom: 0.5rem;
   }
   
-  form input {
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
+  
   
   form input:focus {
     border-color: var(--dark);
@@ -550,7 +552,7 @@ h1.browse {
   
   /* Submit Button */
   button[type="submit"] {
-    background-color: var(--dark);
+    background-color: var(--loginbtn);
     color: white;
     padding: 1rem 2rem;
     font-size: 1.1rem;
@@ -581,7 +583,8 @@ h1.browse {
   }
   
   .modal-content {
-    background-color: white;
+    background-color: var(--banner);
+    color: var(--BW);
     padding: 2rem;
     border-radius: 12px;
     text-align: center;
@@ -618,6 +621,11 @@ h1.browse {
     background-color: var(--orange);
   }
 
+  .friendsmodal {
+    color: var(--dark);
+    font-family: 'Domine', serif;
+    margin-top: 5px;
+  }
   /*CONFETTI*/
  
  
@@ -659,7 +667,7 @@ h1.browse {
         left: 0;
         width: 250px; /* Adjust width as needed */
         height: 100%;
-        background-color: #fff;
+        background-color: var(--banner);
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
         padding: 1rem;
         z-index: 1000;
@@ -772,7 +780,11 @@ h1.browse {
     
       .user-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        word-wrap: break-word;  /* Allows long words to break and wrap to the next line */
+  overflow-wrap: break-word;
       }
+
+      
 
       /*BROWSE PAGE*/
 

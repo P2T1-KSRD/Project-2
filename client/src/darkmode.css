@@ -1,0 +1,22 @@
+/* dark-mode.css */
+.dark-mode {
+  --background: #121212;
+  --text-color: #e0e0e0;
+  --dark: #1e1e1e;
+  --orange: #ff9f1c;
+  --creamsicle: #000000;
+  --light: #516362;
+  --dark: #2ec4b6;
+  --darktext: #2ec4b6;
+  --darkbutton: #1b7168;
+  --banner: #1e1e1e;
+  --browse: #050c0bbd;
+  --subheading: white;
+  --loginbtn: #239085;
+  --buttonhover: #945b0b;
+
+}
+
+
+
+/* Styles for dark mode-specific elements can also go here. */
