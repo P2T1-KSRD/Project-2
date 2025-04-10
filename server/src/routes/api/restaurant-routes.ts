@@ -100,12 +100,7 @@ router.post("/bulk", async (req: Request, res: Response) => {
 
     const { lat, lng } = location;
 
-    return res.status(200).json({
-      message: "Restaurants fetched successfully",
-      location: { lat, lng },
-    });
-
-    try{
+    try {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json`,
         {
@@ -114,8 +109,8 @@ router.post("/bulk", async (req: Request, res: Response) => {
             radius: radius,
             type: "restaurant",
             key: process.env.GOOGLE_PLACES_API_KEY,
-          },  
-       }
+          },
+        }
       );
       const places = response.data.results;
       console.log("Places fetched:", places);
@@ -130,7 +125,7 @@ router.post("/bulk", async (req: Request, res: Response) => {
         name: place.name,
         cuisine: place.types.join(", "),
         address: place.vicinity,
-        rating: place.rating,
+        rating: (place.rating / 5) * 100,
         price: place.price_level,
       }));
 
@@ -141,8 +136,13 @@ router.post("/bulk", async (req: Request, res: Response) => {
         message: "Restaurants fetched and created successfully",
         restaurants,
       });
+    } catch (error: any) {
+      console.error("Error fetching places:", error);
+      return res.status(500).json({
+        message: "Failed to fetch restaurants from Google Places API",
+        error: error.message,
+      });
     }
-    
   } catch (error: any) {
     console.error("Error fetching restaurants:", error);
     return res.status(500).json({
@@ -150,7 +150,6 @@ router.post("/bulk", async (req: Request, res: Response) => {
       error: error.message,
     });
   }
-  
 });
 
 export { router as restaurantRouter };
