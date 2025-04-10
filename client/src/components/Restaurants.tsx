@@ -4,6 +4,8 @@ import { retrieveRestaurants, deleteRestaurant } from "../api/restaurantAPI";
 import { createVote, deleteVote } from "../api/voteAPI";
 import ErrorPage from "../pages/ErrorPage";
 import ForkItButton from "./ForkItButton";
+import BurgerConfetti from "./confetti";
+import DeleteConfirmationModal from "../interfaces/DeleteModal";
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState<RestaurantData[]>([]);
@@ -11,6 +13,11 @@ const RestaurantList = () => {
   const [upvote, setUpvote] = useState(false);
   const [downvote, setDownvote] = useState(false);
   const [forkItRestaurant, setForkItRestaurant] = useState<RestaurantData | null>(null);
+  const [confetti, setConfetti] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [restaurantToDelete, setRestaurantToDelete] = useState<number | null>(null);
+
+
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -27,6 +34,9 @@ const RestaurantList = () => {
   }, [upvote, downvote]);
 
   const handleForkIt = () => {
+    setConfetti(true);
+    setTimeout(() => setConfetti(false), 100)
+
     if (restaurants.length > 0) {
       const totalWeight = restaurants.reduce((sum, r) => sum + (r.rating ?? 0), 0);
 
@@ -46,11 +56,17 @@ const RestaurantList = () => {
     }
   };
 
-  const handleDeleteRestaurant = async (restaurantId: number) => {
-    if (window.confirm("Are you sure you want to delete this restaurant?")) {
+  const handleDeleteRestaurant = (restaurantId: number) => {
+    setRestaurantToDelete(restaurantId);
+    setShowModal(true);
+  }
+   
+  const deletedConfirmed = async () => {
+    if (restaurantToDelete) {
       try {
-        await deleteRestaurant(restaurantId);
-        setRestaurants(restaurants.filter((r) => r.id !== restaurantId));
+        await deleteRestaurant(restaurantToDelete);
+        setRestaurants(restaurants.filter((r) => r.id !== restaurantToDelete));
+        setShowModal(false);
       } catch (error) {
         console.error("Failed to delete restaurant:", error);
         setError(true);
@@ -124,6 +140,12 @@ const RestaurantList = () => {
           </div>
         ))}
       </div>
+      <BurgerConfetti trigger={confetti} />
+      <DeleteConfirmationModal 
+        show={showModal} 
+        onClose={() => setShowModal(false)} 
+        onConfirm={deletedConfirmed} 
+      />
     </div>
   );
 };
