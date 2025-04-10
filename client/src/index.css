@@ -11,6 +11,7 @@
     --subheading: #374151;
     --input: rgb(243, 243, 243);
     --BW: white;
+    --black: black;
     --loginbtn: #2ec4b6;
   }
 
@@ -316,7 +317,7 @@
     outline: none;
     transition: border-color 0.3s ease;
     background-color: var(--input);
-    color: var(--BW);
+    color: var(--black);
   }
   
   form input:focus {
