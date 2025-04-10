@@ -7,6 +7,7 @@ import {
   sortRestaurantRatingsInDescendingOrder,
 } from "../../services/ratingServices.js";
 import { chooseRandomRestaurant } from "../../services/restaurantServices.js";
+import axios from "axios";
 
 const router = express.Router();
 
@@ -72,6 +73,84 @@ router.post("/", async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
+});
+
+// POST /restaurants/bulk - Create multiple restaurants from Google Places API
+// This endpoint is used to fetch restaurants based on a ZIP code and radius
+// and create them in the database.
+router.post("/bulk", async (req: Request, res: Response) => {
+  const { zipCode, radius } = req.body;
+  if (!zipCode || !radius) {
+    return res.status(400).json({
+      message: "ZIP code and radius are required to fetch restaurants.",
+    });
+  }
+  try {
+    // Convert ZIP code to lat/lng using Google Geocoding API
+    const geocodeResponse = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json`,
+      {
+        params: {
+          address: zipCode,
+          key: process.env.GOOGLE_PLACES_API_KEY,
+        },
+      }
+    );
+    const location = geocodeResponse.data.results[0].geometry.location;
+
+    const { lat, lng } = location;
+
+    return res.status(200).json({
+      message: "Restaurants fetched successfully",
+      location: { lat, lng },
+    });
+
+    try{
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json`,
+        {
+          params: {
+            location: `${lat},${lng}`,
+            radius: radius,
+            type: "restaurant",
+            key: process.env.GOOGLE_PLACES_API_KEY,
+          },  
+       }
+      );
+      const places = response.data.results;
+      console.log("Places fetched:", places);
+      if (places.length === 0) {
+        return res.status(404).json({
+          message: "No restaurants found in the specified area.",
+        });
+      }
+
+      // Map the places to the restaurant model
+      const restaurants = places.map((place: any) => ({
+        name: place.name,
+        cuisine: place.types.join(", "),
+        address: place.vicinity,
+        rating: place.rating,
+        price: place.price_level,
+      }));
+
+      // Bulk create restaurants in the database
+      await Restaurant.bulkCreate(restaurants);
+
+      return res.status(200).json({
+        message: "Restaurants fetched and created successfully",
+        restaurants,
+      });
+    }
+    
+  } catch (error: any) {
+    console.error("Error fetching restaurants:", error);
+    return res.status(500).json({
+      message: "Failed to fetch restaurants",
+      error: error.message,
+    });
+  }
+  
 });
 
 export { router as restaurantRouter };
